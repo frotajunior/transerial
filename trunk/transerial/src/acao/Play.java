@@ -1,4 +1,6 @@
 package acao;
+import gui.Gui;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,6 +20,14 @@ public class Play implements Runnable,SerialPortEventListener{
 	Thread threadLeitura = null;
 	InputStream entrada;
 	CommPortIdentifier cp = null;
+	Gui gui;
+	StringBuffer leitura = new StringBuffer();
+	
+	public Play(Gui gui)
+	{
+		this.gui = gui;
+	}
+	
 	
 	public void conecta(String portaEscolhida)
 	{
@@ -26,6 +36,7 @@ public class Play implements Runnable,SerialPortEventListener{
 			porta = (SerialPort)cp.open(portaEscolhida,100);
 			porta.setSerialPortParams(9600, porta.DATABITS_8, porta.STOPBITS_2, porta.PARITY_NONE);
 			porta.addEventListener(this);
+			lerDados();
 		} catch (TooManyListenersException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -41,32 +52,15 @@ public class Play implements Runnable,SerialPortEventListener{
 	}
 	
 	public static void main(String[] args) {
-		Play play = new Play();
-		play.executa();
+//		Play play = new Play();
 	}
 	
-	public void executa()
+	public void enviaDados(String dados)
 	{
-		Enumeration listaDePortas; 
-		listaDePortas  = CommPortIdentifier.getPortIdentifiers();
-		
-		//Identificando as postas e obtendo um array delas
-		int  i = 0; 
-		String[] portas = new String[10]; 
-		while (listaDePortas.hasMoreElements()) { 
-			CommPortIdentifier ips = (CommPortIdentifier)listaDePortas.nextElement(); 
-			portas[i] = ips.getName(); 
-			i++; 
-		}
-		System.out.println(new Portas().getPortas()[4]);
-		
-		//Abrindo uma porta específica
-		
 		try{
 			OutputStream saida = porta.getOutputStream();
 			
-			String msg = "Olá Mundo!"; 
-			saida.write(msg.getBytes()); 
+			saida.write(dados.getBytes()); 
 			Thread.sleep(100); 
 			saida.flush();
 		}catch(Exception ex){
@@ -112,7 +106,9 @@ public class Play implements Runnable,SerialPortEventListener{
 						b = entrada.read(bytes);
 						i++;
 					}
-					String leitura = new String(bytes);
+					String bytesLidos = new String(bytes);
+					leitura.append(bytesLidos);
+					gui.getRecepcao().setText(leitura.toString());
 					System.out.print(leitura);
 				} catch (Exception e) {
 					 e.printStackTrace();
