@@ -11,16 +11,12 @@
 
 package gui;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
-import com.sun.java.swing.plaf.nimbus.ToggleButtonPainter;
-
-import acao.Play;
-
 import util.Portas;
+import acao.Play;
 /**
  *
  * @author arce
@@ -65,7 +61,7 @@ public class Gui extends javax.swing.JFrame {
         envio = new JTextArea();
         labelEnvio = new JLabel();
         labelRecepcao = new JLabel();
-        play = new Play();
+        play = new Play(this);
 
         
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -76,7 +72,7 @@ public class Gui extends javax.swing.JFrame {
         envio.setRows(5);
         jScrollPane1.setViewportView(envio);
         
-        recepcao.setColumns(20);
+        recepcao.setColumns(5);
         recepcao.setRows(5);        
         recepcao.setEditable(false);
         jScrollPane2.setViewportView(recepcao);
@@ -208,8 +204,7 @@ public class Gui extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBtEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtEnviarActionPerformed
-        System.out.println("Começa aqui!!!!");
-
+    	play.enviaDados(envio.getText());
     }//GEN-LAST:event_jBtEnviarActionPerformed
     
     private void btnConectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtEnviarActionPerformed
@@ -266,6 +261,11 @@ public class Gui extends javax.swing.JFrame {
     private JTextArea envio;
     private JTextArea recepcao;
     private Play play;
+    
+    public JTextArea getRecepcao()
+    {
+    	return recepcao;
+    }
     // End of variables declaration//GEN-END:variables
 
 }
