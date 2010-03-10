@@ -15,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JToggleButton;
 
+import classes.PacoteEnvio;
+import classes.Transmissor;
+
 import util.Portas;
 import acao.Play;
 /**
@@ -62,7 +65,7 @@ public class Gui extends javax.swing.JFrame {
         labelEnvio = new JLabel();
         labelRecepcao = new JLabel();
         play = new Play(this);
-
+        transmissor = new Transmissor();
         
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Redes I - 2010.1");
@@ -97,7 +100,7 @@ public class Gui extends javax.swing.JFrame {
 
         jCheckBox1.setText("SimulaÃ§Ã£o de erro?");
         labelEnvio.setText("Envio:");
-        labelRecepcao.setText("Recepção:");
+        labelRecepcao.setText("Recepï¿½ï¿½o:");
 
         jBtEnviar.setText("Enviar");
         jBtEnviar.addActionListener(new java.awt.event.ActionListener() {
@@ -203,11 +206,14 @@ public class Gui extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBtEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtEnviarActionPerformed
-    	play.enviaDados(envio.getText());
-    }//GEN-LAST:event_jBtEnviarActionPerformed
+    private void jBtEnviarActionPerformed(java.awt.event.ActionEvent evt) 
+    {
+    	PacoteEnvio [] pacoteEnvio = transmissor.transmitirMensagem("teste", "teste", Integer.parseInt(tamAreaDado.getText()), envio.getText());
+    	play.enviaPacotes(pacoteEnvio);
+    }
     
-    private void btnConectaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtEnviarActionPerformed
+    private void btnConectaActionPerformed(java.awt.event.ActionEvent evt) 
+    {//GEN-FIRST:event_jBtEnviarActionPerformed
     	if (btnConecta.isSelected()){
     		btnConecta.setText("Desconecta");
     		play.conecta(destino.getSelectedItem().toString());
@@ -261,6 +267,7 @@ public class Gui extends javax.swing.JFrame {
     private JTextArea envio;
     private JTextArea recepcao;
     private Play play;
+    private Transmissor transmissor;
     
     public JTextArea getRecepcao()
     {
